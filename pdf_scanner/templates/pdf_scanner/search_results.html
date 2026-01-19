@@ -1,0 +1,25 @@
+<form method="GET" action="{% url 'search_pdfs' %}">
+    <input type="text" name="q" placeholder="Search keywords (e.g. 'Invoice', 'Tax')..." value="{{ query|default:'' }}">
+    <button type="submit">Search</button>
+    
+    {% if query %}
+        <a href="{% url 'search_pdfs' %}">Clear Search</a>
+    {% endif %}
+</form>
+
+<hr>
+
+<h2>Search Results</h2>
+{% if pdfs %}
+    <ul>
+        {% for pdf in pdfs %}
+            <li>
+                <strong>{{ pdf.name }}</strong> — 
+                <a href="{{ pdf.file.url }}" target="_blank">Open PDF</a>
+                <p><small>Uploaded on: {{ pdf.upload_date }}</small></p>
+            </li>
+        {% endfor %}
+    </ul>
+{% else %}
+    <p>No PDFs found matching "{{ query }}".</p>
+{% endif %}

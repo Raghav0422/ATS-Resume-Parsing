@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PDF Intelligence Scanner</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@1/css/pico.min.css">
+    
+    <style>
+        
+        body { padding: 1rem; background: #000435; color: black; padding: 2px; }
+        
+        header.container { 
+        margin-bottom: 0; /* Remove bottom margin of header */
+        padding-bottom: 0; /* Remove bottom padding of header */
+        }
+        /* Layout Grid */
+        .dashboard-container { 
+            display: grid; 
+            grid-template-columns: 300px 1fr; 
+            gap: 2rem; 
+            margin-top: 0;
+            padding-top: 1rem;
+        }
+
+        /* Sidebar Card */
+        .sidebar-card { 
+            background: white; 
+            padding: 1.5rem; 
+            border-radius: 12px; 
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+        }
+
+        /* File Grid System */
+        .file-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+            gap: 1.5rem;
+        }
+
+        /* Individual PDF Card */
+        .file-card {
+            background: white;
+            text-align: center;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            padding: 1.5rem 1rem;
+            border-radius: 12px;
+            border: 1px solid #eee;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .file-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px rgba(0,0,0,0.1);
+            border-color: #3b82f6;
+        }
+
+        .file-link {
+            text-decoration: none;
+            color: #333;
+            width: 100%;
+        }
+
+        .pdf-icon {
+            width: 50px;
+            height: 50px;
+            margin-bottom: 0.8rem;
+            color: #e74c3c; /* PDF Red */
+        }
+
+        .file-name {
+            font-size: 0.85rem;
+            font-weight: 600;
+            line-height: 1.2;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            word-break: break-word;
+        }
+
+        .delete-btn {
+            background: transparent;
+            border: none;
+            color: #ff4d4d;
+            font-size: 0.7rem;
+            margin-top: 10px;
+            padding: 2px 8px;
+            cursor: pointer;
+            opacity: 0.6;
+        }
+
+        .delete-btn:hover {
+            opacity: 1;
+            background: #fff5f5;
+        }
+    </style>
+</head>
+<body>
+
+    <header class="container">
+        <hgroup>
+            <h1>📄 PDF Scanner</h1>
+            <p>Upload, store, and search document contents.</p>
+        </hgroup>
+    </header>
+
+    <main class="container dashboard-container">
+        
+        <aside>
+            <div class="sidebar-card">
+                <h3>Actions</h3>
+                
+                <form method="GET" style="margin-bottom: 2rem;">
+                    <label for="search">Search Keywords</label>
+                    <input type="search" name="q" placeholder="Search content..." value="{{ query|default:'' }}">
+                    <button type="submit" class="secondary">Filter</button>
+                </form>
+
+                <hr>
+
+                <form method="POST" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <label for="file">Upload New PDF</label>
+                    {{ form.name }}
+                    {{ form.file }}
+                    <button type="submit">Upload & Scan</button>
+                </form>
+            </div>
+        </aside>
+
+        <section>
+            <div class="file-grid">
+                {% for pdf in pdfs %}
+                    <div class="file-card">
+                        <a href="{{ pdf.file.url }}" target="_blank" class="file-link">
+                            <svg class="pdf-icon" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M14,2H6A2,2 0 0,0 4,4V20A2,2 0 0,0 6,22H18A2,2 0 0,0 20,20V8L14,2M18,20H6V4H13V9H18V20M7,13V11H17V13H7M7,17V15H17V17H7Z" />
+                            </svg>
+                            <div class="file-name">{{ pdf.name }}</div>
+                        </a>
+                        <!-- here was the below commented code -->
+                    </div>
+                {% empty %}
+                    <div style="grid-column: 1 / -1; text-align: center; padding: 3rem;">
+                        <p>No documents found. Start by uploading a PDF!</p>
+                    </div>
+                {% endfor %}
+            </div>
+        </section>
+
+    </main>
+
+</body>
+</html>
+
+<!-- url 'delete_pdf' pdf.pk 
+<form action="" method="POST" onsubmit="return confirm('Delete this file?');">
+                            {% csrf_token %}
+                            <button type="submit" class="delete-btn">Remove</button>
+                        </form> -->
+
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PDF Intelligence Scanner</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@1/css/pico.min.css">
+    <style>
+        body { padding: 2rem; }
+        .grid-container { display: grid; grid-template-columns: 1fr 2fr; gap: 2rem; }
+        .card { padding: 1rem; border: 1px solid #ddd; border-radius: 8px; margin-bottom: 1rem; }
+        mark { background: #ffd33d; color: black; padding: 2px; }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>📄 PDF Scanner AI</h1>
+        <p>Upload documents and search through their contents instantly.</p>
+    </header>
+
+    <main class="container">
+        <div class="grid-container">
+            
+            <section>
+                <div class="card">
+                    <h3>Upload New PDF</h3>
+                    <form method="POST" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        {{ form.as_p }}
+                        <button type="submit" class="contrast">Process & Save</button>
+                    </form>
+                </div>
+            </section>
+
+            <section>
+                <form method="GET">
+                    <input type="search" name="q" placeholder="Enter keyword to filter..." value="{{ query|default:'' }}">
+                    <button type="submit">Search Database</button>
+                </form>
+
+                <hr>
+
+                <h3>Document Library</h3>
+                {% if pdfs %}
+                    {% for pdf in pdfs %}
+                        <article class="card">
+                            <header><strong>{{ pdf.name }}</strong></header>
+                            <p><small>Uploaded: {{ pdf.upload_date|date:"M d, Y" }}</small></p>
+                            <footer>
+                                <a href="{{ pdf.file.url }}" target="_blank" role="button" class="outline">Open PDF</a>
+                            </footer>
+                        </article>
+                    {% endfor %}
+                {% else %}
+                    <p>No documents found. Try uploading one or changing your search.</p>
+                {% endif %}
+            </section>
+
+        </div>
+    </main>
+
+</body>
+</html> -->

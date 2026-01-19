@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'pdf_scanner',
+    'rest_framework',
 ]
 
 MIDDLEWARE = [
