@@ -80,6 +80,14 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': BASE_DIR / 'db.sqlite3',
+    },
+
+    'mongodb':{
+        'ENGINE': 'django_mongodb_backend',
+        'NAME': 'ats_resume_data',
+        'CLIENT': {
+            'host': 'mongodb+srv://maangengg_db_user: jj0tQfK2In19ftLN@cluster0.ll9dvkh.mongodb.net/?appName=Cluster0',
+        },
     }
 }
 
