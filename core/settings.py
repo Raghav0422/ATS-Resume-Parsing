@@ -91,6 +91,7 @@ DATABASES = {
     }
 }
 
+DATABASE_ROUTERS = ['pdf_scanner.db_routers.MongoRouter']
 
 # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
