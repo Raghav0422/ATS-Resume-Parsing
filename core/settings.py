@@ -85,9 +85,14 @@ DATABASES = {
     'mongodb':{
         'ENGINE': 'django_mongodb_backend',
         'NAME': 'ats_resume_data',
-        'CLIENT': {
-            'host': 'mongodb+srv://maangengg_db_user: jj0tQfK2In19ftLN@cluster0.ll9dvkh.mongodb.net/?appName=Cluster0',
-        },
+        'HOST':'mongodb+srv://maangengg_db_user:maangengg_db_user@cluster0.ll9dvkh.mongodb.net/?appName=Cluster0',
+        # 'CLIENT': {
+        #     'host': 'mongodb+srv://maangengg_db_user:maangengg_db_user@cluster0.ll9dvkh.mongodb.net/?appName=Cluster0',
+        #     'tlsAllowInvalidCertificates': True, # Bypasses potential SSL handshake stalls
+        #     'serverSelectionTimeoutMS': 2000,     # Stop hanging after 2 seconds
+        #     'connectTimeoutMS': 2000,
+        #     'directConnection': True,
+        # },
     }
 }
 

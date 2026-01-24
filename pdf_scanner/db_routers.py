@@ -3,12 +3,19 @@ class MongoRouter:
     
     def db_for_read(self, model, **hints):
         if model._meta.app_label == 'pdf_scanner':
-            return 'mongodb'
+            try:
+                print(f"DEBUG: Routing READ for {model.__name__} to MongoDB")
+                return 'mongodb'
+            except Exception:
+                pass
+        print(f"DEBUG: Routing READ for {model.__name__} to SQLLITE")
         return 'default'
 
     def db_for_write(self, model, **hints):
         if model._meta.app_label == 'pdf_scanner':
+            print(f"DEBUG: Routing READ for {model.__name__} to MongoDB")
             return 'mongodb'
+        print(f"DEBUG: Routing READ for {model.__name__} to SQLlite")
         return 'default'
 
     def allow_migrate(self, db, app_label, model_name=None, **hints):
