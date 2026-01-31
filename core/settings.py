@@ -12,6 +12,20 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 
 from pathlib import Path
 import os
+import cloudinary
+
+# CLOUDINARY_STORAGE = {
+#     'CLOUD_NAME': 'djweppuzj',
+#     'API_KEY': '353715182658977',
+#     'API_SECRET': 'S-sgke_oSRbJH2tGdfTkAJ2amsg'
+# }
+cloudinary.config(
+    cloud_name="djweppuzj",
+    api_key="353715182658977",
+    api_secret="S-sgke_oSRbJH2tGdfTkAJ2amsg",
+    secure=True
+)
+DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -22,9 +36,11 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'django-insecure-yjni6l0&_^jz0j((f=7+1ndc-3s*h*iioid569sd3nl-hr*yb6'
+# 
+# CLOUDINARY_URL='cloudinary://353715182658977:MJ5VM@djweppuzj'   
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['*']
 
@@ -32,14 +48,16 @@ ALLOWED_HOSTS = ['*']
 # Application definition
 
 INSTALLED_APPS = [
+    'cloudinary_storage',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'cloudinary',
     'pdf_scanner',
-    'rest_framework',
+    'rest_framework'
 ]
 
 MIDDLEWARE = [
@@ -97,6 +115,7 @@ DATABASES = {
 }
 
 DATABASE_ROUTERS = ['pdf_scanner.db_routers.MongoRouter']
+
 
 # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators

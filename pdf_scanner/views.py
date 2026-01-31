@@ -9,6 +9,11 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
 
+import cloudinary
+import cloudinary.uploader
+import cloudinary.api
+from cloudinary import CloudinaryImage
+
 @api_view(['GET','POST'])
 def dashboard_view(request):
     query = request.GET.get('q')
@@ -18,10 +23,17 @@ def dashboard_view(request):
         form = PDFUploadForm(request.POST, request.FILES)
         if form.is_valid():
             pdf_instance = form.save(commit=False)
+            # 1. Get the file handle
+            uploaded_file = request.FILES['file']
             # PyMuPDF extraction
-            file_bytes = request.FILES['file'].read()
+            # file_bytes = request.FILES['file'].read()
+            file_bytes = uploaded_file.read()
             doc = fitz.open(stream=file_bytes, filetype="pdf")
             pdf_instance.extracted_text = "".join([page.get_text() for page in doc])
+            
+
+            uploaded_file.seek(0)
+
             pdf_instance.save()
             return redirect('dashboard')
 
